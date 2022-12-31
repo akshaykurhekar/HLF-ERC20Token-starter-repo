@@ -15,7 +15,7 @@ CC_SRC_PATH="../token-erc-20/chaincode-javascript/"
 CC_NAME=${1:-"no"}
 
 if [ "$CC_NAME" != "no" ]; then 
-    echo Chanode name  => ${CC_NAME}
+    echo Chanode name is ${CC_NAME}
 else 
     echo pls pass Chaincode Name as First arg.
     exit 1

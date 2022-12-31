@@ -2,7 +2,6 @@
 
 'use strict';
 
-const multer  = require('multer')
 const express = require('express');
 
 const app = express();
