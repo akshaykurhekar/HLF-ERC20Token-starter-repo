@@ -27,6 +27,7 @@ class TokenERC20Contract extends Contract {
         await ctx.stub.putState(nameKey, Buffer.from(name)) // to create a state on ledger
         await ctx.stub.putState(symbolKey, Buffer.from(symbol)) // to create a state on ledger
         await ctx.stub.putState(decimalsKey, Buffer.from(decimals)) // to create a state on ledger
+        return 'success';
     }
 
     async TokenName(ctx) {
