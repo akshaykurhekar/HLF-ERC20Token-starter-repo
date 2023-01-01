@@ -50,3 +50,17 @@ then will see development setup along with creating chaincode for our Dapp.
     Token details ::  DevToken
 
     --------------------------------------------------
+    day - 2 
+
+    create chain code fun for mint, transfer along with balance and accountId
+
+    Note:
+    once you deploy chaincode, if you updated logic of chaincode and you want to use that logic
+    need to upgrade chaincode with new_cc_name.
+
+    $ cd token-erc-20
+
+    $ ./upgradeChaincode.sh CC_Name
+
+    To stop container
+    $ docker stop 

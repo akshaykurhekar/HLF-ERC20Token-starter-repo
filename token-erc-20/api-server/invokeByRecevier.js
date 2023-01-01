@@ -37,21 +37,19 @@ async function main() {
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const contract = network.getContract('ercToken2');
+        const contract = network.getContract('er20Token4');
 
         // const res = await contract.submitTransaction('TokenName');
         // console.log("Token name ::", res.toString());
 
-        // const result = await contract.submitTransaction('Symbol');
-        // console.log('token symbol :: ', result.toString());
-
-        const AccountId = await contract.submitTransaction('ClientAccountID');
-        console.log('Account Id:: ', AccountId.toString());
         
-        const result = await contract.submitTransaction('Mint',5000);
-        console.log('Mint status :: ', result.toString());
+        // const AccountId = await contract.submitTransaction('ClientAccountID');
+        // console.log('Account Id:: ', AccountId.toString());
+        
+        // const result = await contract.submitTransaction('Mint',5000);
+        // console.log('Mint status :: ', result.toString());
 
-        const AccountBalance = await contract.submitTransaction('ClientAccountBalance');
+        const AccountBalance = await contract.submitTransaction('getBalance');
         console.log('Account Balance:: ', AccountBalance.toString());
 
         // Disconnect from the gateway.
