@@ -102,58 +102,66 @@ class TokenERC20Contract extends Contract {
         const balanceKey = ctx.stub.createCompositeKey(balancePrefix,[userID]);
         const currentBalanceBytes = await ctx.stub.getState(balanceKey);
 
-        if(!currentBalanceBytes || currentBalanceBytes.length === 0 ){
+        if(!currentBalanceBytes || currentBalanceBytes.length === 0 || currentBalanceBytes === 0  ){
             return(`This user ${userID} has Zero balance Account`);
 
-        }else {
-            balance = parseInt(currentBalanceBytes.toString());
         }
+            balance = parseInt(currentBalanceBytes.toString());
+        
 
         return balance;
     }
 
-    async Transfer(ctx,to, amount){
-        // validating amount
-        const amountInt = parseInt(amount);
-        if(amountInt < 0){
-            return('Amount should not be Zero....!');
-        }
-
-        let senderBalance;
-        let receiverBalance;
-
+    async Transfer(ctx,to, value){
+       
         let cid = new ClientIdentity(ctx.stub);
-        const userID = await cid.getAttributeValue('userId'); // get userId from cert of registered user.
+        const from = await cid.getAttributeValue('userId'); // get sender userId from cert of registered user.
         
-        const balanceKeyForSender = ctx.stub.createCompositeKey(balancePrefix,[userID]);  // this is sender id
-        const currentBalanceBytes = await ctx.stub.getState(balanceKeyForSender);
+         // Convert value from string to int
+         const valueInt = parseInt(value);
 
-        const balanceKeyForReceiver= ctx.stub.createCompositeKey(balancePrefix,[to]);  // this is receiver id
-        receiverBalance = await ctx.stub.getState(balanceKeyForReceiver); // receiver balance
-
-        if(!currentBalanceBytes || currentBalanceBytes.length === 0 ){
-            return(`User ${userID} is not allowed to send Token; Zero Balance Error...!`);
-
-        }else {
-            
-            senderBalance = parseInt(currentBalanceBytes.toString());
-        }
-
-        if(senderBalance < amountInt){
-                // can perform transfer logic
-                return(` User ${userID} has insufficient Balance for this Transaction...!`)
-        }
-        
-                // 1. decrement sender balance by amount
-               const sBalance = senderBalance - amountInt;
-                await ctx.stub.putState(balanceKeyForSender, sBalance);
-                
-                // 2. increment receiver balance by amount
-                receiverBalance = receiverBalance + amountInt;
-                await ctx.stub.putState(balanceKeyForReceiver, receiverBalance);
-
-         
-            return "success"
+         if (valueInt < 0) { // transfer of 0 is allowed in ERC20, so just validate against negative amounts
+             return('transfer amount cannot be negative');
+         }
+ 
+         // Retrieve the current balance of the sender
+         const fromBalanceKey = ctx.stub.createCompositeKey(balancePrefix, [from]);
+         const fromCurrentBalanceBytes = await ctx.stub.getState(fromBalanceKey);
+ 
+         if (!fromCurrentBalanceBytes || fromCurrentBalanceBytes.length === 0) {
+             return(`client account ${from} has no balance`);
+         }
+ 
+         const fromCurrentBalance = parseInt(fromCurrentBalanceBytes.toString());
+ 
+         // Check if the sender has enough tokens to spend.
+         if (fromCurrentBalance < valueInt) {
+             return(`client account ${from} has insufficient funds.`);
+         }
+ 
+         // Retrieve the current balance of the recepient
+         const toBalanceKey = ctx.stub.createCompositeKey(balancePrefix, [to]);
+         const toCurrentBalanceBytes = await ctx.stub.getState(toBalanceKey);
+ 
+         let toCurrentBalance;
+         // If recipient current balance doesn't yet exist, we'll create it with a current balance of 0
+         if (!toCurrentBalanceBytes || toCurrentBalanceBytes.length === 0) {
+             toCurrentBalance = 0;
+         } else {
+             toCurrentBalance = parseInt(toCurrentBalanceBytes.toString());
+         }
+ 
+         // Update the balance
+         const fromUpdatedBalance = fromCurrentBalance - valueInt;
+         const toUpdatedBalance = toCurrentBalance + valueInt;
+ 
+         await ctx.stub.putState(fromBalanceKey, Buffer.from(fromUpdatedBalance.toString()));
+         await ctx.stub.putState(toBalanceKey, Buffer.from(toUpdatedBalance.toString()));
+ 
+         console.log(`client ${from} balance updated from ${fromCurrentBalance} to ${fromUpdatedBalance}`);
+         console.log(`recipient ${to} balance updated from ${toCurrentBalance} to ${toUpdatedBalance}`);
+ 
+         return true;
 
     }
 

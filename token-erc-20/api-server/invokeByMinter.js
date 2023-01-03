@@ -37,16 +37,16 @@ async function main() {
         const network = await gateway.getNetwork('mychannel');
 
         // Get the contract from the network.
-        const contract = network.getContract('er20Token4');
+        const contract = network.getContract('token202');
 
-        // const result2 = await contract.submitTransaction('Mint',9000);
-        // console.log('Mint status :: ', result2.toString());
+        const result2 = await contract.submitTransaction('Mint',9000);
+        console.log('Mint status :: ', result2.toString());
 
-        // const result = await contract.submitTransaction('getBalance');
-        // console.log('User Balance :: ', result.toString());
+        const result = await contract.submitTransaction('getBalance');
+        console.log('User Balance :: ', result.toString());
 
-        // const result1 = await contract.submitTransaction('Transfer','Akshay',2100);
-        // console.log('Transfer status :: ', result1.toString());
+        const result1 = await contract.submitTransaction('Transfer','Akshay',2100);
+        console.log('Transfer status :: ', result1.toString());
 
 
         const result4 = await contract.submitTransaction('getBalance');
