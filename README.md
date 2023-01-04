@@ -49,7 +49,7 @@ then will see development setup along with creating chaincode for our Dapp.
     out put:
     Token details ::  DevToken
 
-    --------------------------------------------------
+    
     day - 2 
 
     create chain code fun for mint, transfer along with balance and accountId
@@ -58,9 +58,21 @@ then will see development setup along with creating chaincode for our Dapp.
     once you deploy chaincode, if you updated logic of chaincode and you want to use that logic
     need to upgrade chaincode with new_cc_name.
 
-    $ cd token-erc-20
+`   $ cd token-erc-20`
 
-    $ ./upgradeChaincode.sh CC_Name
+`    $ ./upgradeChaincode.sh CC_Name`
 
+    After upgrading chaincode we will test our ERC20 token functions
+    
+    In node app by invokeByMinter script for minting 9000 Tokens Transfer it to different user and check balance .
+`   $node invokeByMinter.js`
     To stop container
-    $ docker stop 
+`   $ docker stop` 
+
+    To down network or we can say that to close development setup we need to do.
+    
+`    $ cd token-erc-20`
+
+    check files you will get networkDown.sh script we need to execute it.
+
+`   $ ./networkDown.sh`    
