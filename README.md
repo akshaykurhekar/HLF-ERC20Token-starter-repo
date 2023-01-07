@@ -5,14 +5,9 @@ Hi, all very happy to share this new approach to create ERC20 Token using Hyperl
 we will first look into the arc of Hyplerledger Fabric (HLF).
 then will see development setup along with creating chaincode for our Dapp.
 
+#### check out detailed Medium article of this project [https://medium.com/@akshay.kurhekar1014662/erc20-token-implementation-in-hyperledger-fabric-103cbfc21379]
+
 ### 1. up network
-
-    a. it will create 1 channel -> mychannel
-    b. it will create Org1 -> peer0 , peer1  it will join channel
-    c. it will create Org2 -> peer0 , peer1  it will join channel
-
-    will create container in background with orderer.
-    setup network done.
 
     check fabric binary:
     run from any folder
